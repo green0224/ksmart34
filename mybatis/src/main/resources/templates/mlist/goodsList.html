@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+
+<th:block layout:fragment="customTitle">
+	<title>상품리스트</title>
+</th:block>
+<th:block layout:fragment="customContents">
+	<form th:action="@{/gList}" method="post">
+		<select name="sk">  
+			<option value="g_code">상품코드</option>
+			<option value="m_id">아이디</option>
+			<option value="g_name">상품명</option>
+		</select>
+		<input type="text" name="sv" />
+		<input type="submit" value="검색" />
+	</form>
+	<table>
+		<thead>
+			<tr>
+				<th>상품코드</th>
+				<th>아이디</th>
+				<th>상품명</th>
+				<th>개수</th>
+				<th>가격</th>
+				<th>색상</th>				
+				<th>사이즈</th>
+				<th>등록날짜</th>
+				<th>상세설명</th>
+				<th>버튼</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="g: ${goodsList}">
+				<td th:text="${g.gCode}"></td>
+				<td th:text="${g.mId}"></td>
+				<td th:text="${g.gName}"></td>
+				<td th:text="${g.gCate}"></td>
+				<td th:text="${g.gPrice}"></td>
+				<td th:text="${g.gColor}"></td>
+				<td th:text="${g.gSize}"></td>
+				<td th:text="${g.gDate}"></td>
+				<td th:text="${g.gDesc}"></td>
+				<td><a th:href="@{/gUdpate(gCode=${g.gCode})}">수정</a>
+				<a th:href="@{/gDelete(gCode=${g.gCode}, mId=${g.mId})}">삭제</a></td>
+			</tr>
+		</tbody>
+	</table>
+</th:block>
+</html>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ksmart.mybatis.mapper.GoodsMapper">
+	<resultMap type="kr.or.ksmart.mybatis.domain.Goods" id="goodsMap">
+		<result property="gCode" column="g_code" />
+		<result property="mId" column="m_id" />
+		<result property="gName" column="g_name" />
+		<result property="gCate" column="g_cate" />
+		<result property="gPrice" column="g_price" />
+		<result property="gColor" column="g_color" />
+		<result property="gSize" column="g_size" />
+		<result property="gDate" column="g_date" />
+		<result property="gDesc" column="g_desc" />
+	</resultMap>
+
+	<insert id="gInsert"
+		parameterType="kr.or.ksmart.mybatis.domain.Goods">
+		INSERT INTO tb_goods (g_code, m_id, g_name, g_cate, g_price, g_color, g_size, g_date, g_desc)
+		VALUES (#{gCode}, #{mId}, #{gName}, #{gCate}, #{gPrice}, #{gColor}, #{gSize}, now(), #{gDesc});
+	</insert>
+
+	<select id="goodsList" resultMap="goodsMap">
+		SELECT g_code, m_id, g_name, g_cate, g_price, g_color, g_size, date_format(g_date, '%Y-%m-%d')AS g_date, g_desc
+		FROM tb_goods
+	</select>
+
+	<select id="oneSelect" parameterType="String" resultMap="goodsMap">
+		SELECT g_code, m_id, g_name, g_cate, g_price, g_color, g_size, date_format(g_date, '%Y-%m-%d')AS g_date, g_desc
+		FROM tb_goods WHERE g_code =#{gCode};
+	</select>
+	
+	<update id="goodsUpdate" parameterType="kr.or.ksmart.mybatis.domain.Goods">
+		UPDATE tb_goods
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="mId neq null and mId neq ''.toString()">
+				m_id=#{mId},			
+			</if>
+			<if test="gName neq null and gName neq ''.toString()">
+				g_name=#{gName},
+			</if>
+			<if test="gCate neq null and gCate neq ''.toString()">
+				g_cate=#{gCate},
+			</if>
+			<if test="gPrice neq null and gPrice neq ''.toString()">
+				g_price=#{gPrice},
+			</if>
+			<if test="gColor neq null and gColor neq ''.toString()">
+				g_color=#{gColor},			
+			</if>
+			<if test="gSize neq null and gSize neq ''.toString()">
+				g_size=#{gSize},			
+			</if>
+			<if test="gDate neq null and gDate neq ''.toString()">
+				g_date=#{gDate},
+			</if>
+			<if test="gDesc neq null and gDesc neq ''.toString()">
+				g_desc=#{gDesc},
+			</if>
+		</trim>
+		WHERE g_code=#{gCode}	
+	</update>
+	
+	<select id="goodsPw" parameterType="String" resultType="String">
+		SELECT t.m_pw from tb_goods AS a INNER JOIN tb_member AS t on a.m_id = t.m_id WHERE a.g_code =#{gCode} AND t.m_id=#{mId}; 
+	</select>
+	
+	<delete id="gDelete" parameterType="String">
+		DELETE FROM tb_goods WHERE g_code=#{gCode}
+	</delete>	
+	
+	<select id="SelectList" parameterType="String" resultMap="goodsMap">
+		SELECT g_code, m_id, g_name, g_cate, g_price, g_color, g_size, g_date, g_desc
+		FROM  tb_goods WHERE ${sk} LIKE CONCAT('%', #{sv},'%');	
+	</select>
+</mapper>
