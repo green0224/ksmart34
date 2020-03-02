@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ksmart.mybatis.mapper.MemberMapper">
+	<select id="getMemberList" resultType="kr.or.ksmart.mybatis.domain.Member"> 
+		select m_id AS mId,
+			m_pw AS mPw
+			,m_level AS mLevel
+			,m_name AS mName
+			,m_email AS mEmail
+		from tb_member
+	</select>
+
+</mapper>
